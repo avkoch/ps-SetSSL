@@ -1,0 +1,12 @@
+$SChannelPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL"
+
+$KeyExchange = @{
+    "KeyExchangeAlgorithms" = @{
+        "DiffieHellman" = @{
+            "ServerMinKeyBitLength" = @{
+                "Type"  = "DWORD";
+                "Value" = 2048;
+            };
+        };
+    };
+}

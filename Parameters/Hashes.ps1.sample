@@ -1,0 +1,12 @@
+$SChannelPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL"
+
+$Hashes = @{
+    "Hashes" = @{
+        "MD5" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+    };
+}

@@ -1,0 +1,158 @@
+$ProtocolsPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL\Protocols"
+
+$Protocols = @{
+    "Multi-Protocol Unified Hello" = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "PCT 1.0"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "SSL 2.0"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "SSL 3.0"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "TLS 1.0"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "TLS 1.1"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+    "TLS 1.2"                      = @{
+        "Server" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "Client" = @{
+            "Enabled"           = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+            "DisabledByDefault" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+    };
+}

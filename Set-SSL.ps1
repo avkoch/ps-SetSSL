@@ -1,89 +1,90 @@
-# RunAs block. (c) Ben Armstrong (https://docs.microsoft.com/ru-ru/archive/blogs/virtual_pc_guy/a-self-elevating-powershell-script)
+# To update registry files it required to preliminary rename and configure
+# respective files in "Parameters" folder
 
-# Get the ID and security principal of the current user account
-$myWindowsID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
-$myWindowsPrincipal = new-object System.Security.Principal.WindowsPrincipal($myWindowsID)
-# Get the security principal for the Administrator role
-$adminRole = [System.Security.Principal.WindowsBuiltInRole]::Administrator
-# Check to see if we are currently running "as Administrator"
-if ($myWindowsPrincipal.IsInRole($adminRole)) {
-    # We are running "as Administrator" - so change the title and background color to indicate this
-    $Host.UI.RawUI.WindowTitle = $myInvocation.MyCommand.Definition + " (ELEVATED)"
-    $Host.UI.RawUI.BackgroundColor = "Black"
-    Clear-Host
-}
-else {
-    # We are not running "as Administrator" - so relaunch as administrator
-    # Create a new process object that starts PowerShell
-    $newProcess = New-Object System.Diagnostics.ProcessStartInfo "PowerShell"
-    # Specify the current script path and name as a parameter
-    $newProcess.Arguments = $myInvocation.MyCommand.Definition
-    # Indicate that the process should be elevated
-    $newProcess.Verb = "runas"
-    # Start the new process
-    [System.Diagnostics.Process]::Start($newProcess)
-    # Exit from the current, unelevated, process
-    exit
-}
-
-$Protocols = @{
-    "SSL 2.0" = @{
-        "Server" = $false;
-        "Client" = $false;
-    };
-    "SSL 3.0" = @{
-        "Server" = $false;
-        "Client" = $false;
-    };
-    "TLS 1.0" = @{
-        "Server" = $false;
-        "Client" = $false;
-    };
-    "TLS 1.1" = @{
-        "Server" = $false;
-        "Client" = $false;
-    };
-    "TLS 1.2" = @{
-        "Server" = $true;
-        "Client" = $true;
-    };
-}
-
-$SChannel = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\" `
-    + "SCHANNEL\Protocols"
-
-try {
-    foreach ($Protocol in $Protocols.Keys) {
-        foreach ($Direction in $Protocols[$Protocol].Keys) {
-            New-Item -Path "$SChannel\$Protocol\$Direction" -Type Directory -Force `
-            | Out-Null
-            New-ItemProperty -Path "$SChannel\$Protocol\$Direction"  `
-                -Name "Enabled" -PropertyType "DWORD" `
-                -Value ([int]$Protocols[$Protocol][$direction]) | Out-Null
-            New-ItemProperty -Path "$SChannel\$Protocol\$Direction"  `
-                -Name "DisabledByDefault" -PropertyType "DWORD" `
-                -Value ([int]!$Protocols[$Protocol][$direction]) | Out-Null
-        }
+. .\..\ps_CommonScripts\Import-JSONtoRegistry.ps1
+#-------------------------------------------------------------------------------
+function Set-SecProtocols {
+    if (-not (Test-Path .\Parameters\Protocols.ps1)) {
+        Write-Warning "No config file for protocols was found"
+        return
     }
-    Write-Host "Protocols updated successfully" -ForegroundColor Green
-} catch {
-    Write-Warning "Unable to update registry values"
+
+    . .\Parameters\Protocols.ps1
+
+    $Result = Import-JSONtoRegistry $Protocols $ProtocolsPath
+
+    if (-not $Result) {Write-Warning "Unable to set protocols"}
 }
+#-------------------------------------------------------------------------------
+function Set-SecNetFX {
+    if (-not (Test-Path .\Parameters\NetFX.ps1)) {
+        Write-Warning "No config file for NetFx was found"
+        return
+    }
 
-$UpdDotNet = Read-Host "Enforce TLS 1.2 for .Net Framework client? (y/n)"
+    . .\Parameters\NetFX.ps1
 
-if ($UpdDotNet.ToLower() -eq "y") {
-    try {
-        $RegPathX86 = "HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319"
-        $RegPathX64 = "HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319"
-
-        ($RegPathX64, $RegPathX86) | `
-        ForEach-Object {New-ItemProperty -Path $_ -Name "SchUseStrongCrypto" `
-        -PropertyType "DWORD" -Value 1 -Force | Out-Null}
-        Write-Host ".Net Framework client TLS parameters updated successfully" -ForegroundColor Green
-    } catch {
-        Write-Warning "Unable to update .Net Framework client TLS parameters"
+    $NetFxPath | ForEach-Object {
+        $Result = Import-JSONtoRegistry $NetFX $_
+        if (-not $Result) {Write-Warning "Unable to set NetFx security"}
     }
 }
+#-------------------------------------------------------------------------------
+function Set-SecCyphers {
+    if (-not (Test-Path .\Parameters\Cyphers.ps1)) {
+        Write-Warning "No config file for cyphers was found"
+        return
+    }
 
-Read-Host -Prompt "Press Enter to continue"
+    . .\Parameters\Cyphers.ps1
+
+    $Result = Import-JSONtoRegistry $Cyphers $SChannelPath
+
+    if (-not $Result) {Write-Warning "Unable to set cyphers"}
+}
+#-------------------------------------------------------------------------------
+function Set-SecHashes {
+    if (-not (Test-Path .\Parameters\Hashes.ps1)) {
+        Write-Warning "No config file for hashes was found"
+        return
+    }
+
+    . .\Parameters\Hashes.ps1
+
+    $Result = Import-JSONtoRegistry $Hashes $SChannelPath
+
+    if (-not $Result) {Write-Warning "Unable to set hashes"}
+}#-------------------------------------------------------------------------------
+function Set-SecKeyExchange {
+    if (-not (Test-Path .\Parameters\KeyExchange.ps1)) {
+        Write-Warning "No config file for key exchange was found"
+        return
+    }
+
+    . .\Parameters\KeyExchange.ps1
+
+    $Result = Import-JSONtoRegistry $KeyExchange $SChannelPath
+
+    if (-not $Result) {Write-Warning "Unable to set key exchange"}
+}
+#-------------------------------------------------------------------------------
+function Set-SecWinHttpAPI {
+    if (-not (Test-Path .\Parameters\WinHttpAPI.ps1)) {
+        Write-Warning "No config file for WinHttpAPI was found"
+        return
+    }
+
+    . .\Parameters\WinHttpAPI.ps1
+
+    $WinHttpPath | ForEach-Object {
+        $Result = Import-JSONtoRegistry $WinHttpAPI $_
+        if (-not $Result) {Write-Warning "Unable to set WinHttpAPI security"}
+    }
+}
+#===============================================================================
+Set-SecProtocols
+Set-SecNetFX
+Set-SecCyphers
+Set-SecHashes
+Set-SecKeyExchange
+Set-SecWinHttpAPI

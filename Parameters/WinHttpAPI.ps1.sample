@@ -1,0 +1,16 @@
+# Applications using WinHTTP API methods will use this parameters
+# Its value is equal to hexadecimal sum of values for each protocol
+# TLS 1.1 = 0×00000200
+# TLS 1.2 = 0×00000800
+$WinHttpPath = ("HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion", "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion")
+
+$WinHttpAPI = @{
+    "Internet Settings" = @{
+        "WinHttp" = @{
+            "DefaultSecureProtocols" = @{
+                "Type"  = "DWORD";
+                "Value" = 2048;
+            };
+        };
+    };
+}

@@ -1,0 +1,68 @@
+# 
+
+$SChannelPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL"
+
+$Cyphers = @{
+    "Ciphers" = @{
+        "DES 56/56" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "NULL" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC2 128/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC2 40/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC2 56/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC4 40/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC4 56/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC4 64/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "RC4 128/128" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+        "Triple DES 168" = @{
+            "Enabled" = @{
+                "Type"  = "DWORD";
+                "Value" = 0;
+            };
+        };
+    };
+}

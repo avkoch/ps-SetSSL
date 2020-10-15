@@ -1,0 +1,12 @@
+$NetFxPath = ("HKLM:\SOFTWARE\Microsoft", "HKLM:\SOFTWARE\Wow6432Node\Microsoft")
+
+$NetFX = @{
+    ".NETFramework" = @{
+        "v4.0.30319" = @{
+            "SchUseStrongCrypto" = @{
+                "Type"  = "DWORD";
+                "Value" = 1;
+            };
+        };
+    };
+}
