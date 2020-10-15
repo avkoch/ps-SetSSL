@@ -1,7 +1,13 @@
 # To update registry files it required to preliminary rename and configure
 # respective files in "Parameters" folder
 
+if (-not (Test-Path .\..\ps_CommonScripts\Import-JSONtoRegistry.ps1)) {
+    Write-Warning ("Required script '..\ps_CommonScripts\Import-JSONtoRegistry.ps1' not found")
+    exit
+}
+
 . .\..\ps_CommonScripts\Import-JSONtoRegistry.ps1
+
 #-------------------------------------------------------------------------------
 function Set-SecProtocols {
     if (-not (Test-Path .\Parameters\Protocols.ps1)) {
