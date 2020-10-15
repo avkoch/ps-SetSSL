@@ -1,5 +1,3 @@
-# 
-
 $SChannelPath = "HKLM:\SYSTEM\CurrentControlSet\Control\SecurityProviders\SCHANNEL"
 
 $Cyphers = @{
